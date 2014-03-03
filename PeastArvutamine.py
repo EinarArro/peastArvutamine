@@ -75,7 +75,11 @@ def tehte_valik(tehe):
 
 #### tehte valik ###
 print()
-print("Vali tehe:     1: liitmine     2: lahutamine     3: liitmine ja lahutamine     4: korrutamine")
+print("""Vali tehe:   
+	1: liitmine   
+	2: lahutamine   
+	3: liitmine ja lahutamine   
+	4: korrutamine""")
 try:
     tehe = int(input())
 except (ValueError):
