@@ -2,119 +2,119 @@ __author__ = 'einar'
 
 import random
 
-mangu_pikkus = 30
-punktide_counter = 0
-viimane_tehe = ""
+game_length = 30
+points_counter = 0
+last_calculation = ""
 
 
 print("{:*^75}".format(" PEAST ARVUTAMISE MÄNG "))
 print("** Iga õige vastus annab ühe punkti. Iga vale vastus võtab kaks punkti maha")
-print("** Mäng lõppeb, kui oled kokku kogunud {0} punkti".format(mangu_pikkus))
+print("** Mäng lõppeb, kui oled kokku kogunud {0} punkti".format(game_length))
 print("{:*^75}".format("*"))
 
 
 def exit_on_error():
-    v = input("Sinu sisestatud andmed ei ole korrektsed. Väljumiseks vajuta Enter ja taaskäivita mäng")
+    error_message = input("Sinu sisestatud andmed ei ole korrektsed. Väljumiseks vajuta Enter ja taaskäivita mäng")
     raise SystemExit
 
 
-def oige_voi_vale(param1, param2):
-    global punktide_counter
+def right_or_wrong_answer(param1, param2):
+    global points_counter
 
     try:
         if param1 != param2:
-            punktide_counter -= 2
+            points_counter -= 2
             print("VALE VASTUS")
             print()
         else:
-            punktide_counter += 1
+            points_counter += 1
             print()
     except (AttributeError, TypeError):
         raise AssertionError("Õige ja vale vastus ei ole õiget tüüpi")
 
 
-def liitmine():
-    global viimane_tehe
+def addition():
+    global last_calculation
 
     while True:
-        liidetav = random.randint(1, suurim_number)
-        liitja = random.randint(1, suurim_number)
-        kysimus = "{0} + {1} = ".format(liidetav, liitja)
-        if (kysimus != viimane_tehe) or (liidetav == 1 and liitja == 1):
+        addend = random.randint(1, biggest_number)
+        adder = random.randint(1, biggest_number)
+        question = "{0} + {1} = ".format(addend, adder)
+        if (question != last_calculation) or (addend == 1 and adder == 1):
             #kui ühtedega võrdlemist sisse ei too, siis saab süsteemi lolliks ajada
             break
 
     while True:
         try:
-            vastus = int(input(kysimus))
+            answer = int(input(question))
             break
 
         except (AttributeError, TypeError, ValueError):
             print("Sa ei sisestanud täisarvu. Proovi uuesti.")
-    viimane_tehe = kysimus
-    oige_vastus = liidetav + liitja
-    oige_voi_vale(oige_vastus, vastus)
+    last_calculation = question
+    right_answer = addend + adder
+    right_or_wrong_answer(right_answer, answer)
 
 
-def lahutamine():
-    global viimane_tehe
+def subtraction():
+    global last_calculation
 
     while True:
-        lahutatav = random.randint(2, suurim_number)
-        lahutaja = random.randint(1, lahutatav)
-        kysimus = "{0} - {1} = ".format(lahutatav, lahutaja)
-        if kysimus != viimane_tehe:
+        subtractive = random.randint(2, biggest_number)
+        subtracter = random.randint(1, subtractive)
+        question = "{0} - {1} = ".format(subtractive, subtracter)
+        if question != last_calculation:
             break
 
     while True:
         try:
-            vastus = int(input(kysimus))
+            answer = int(input(question))
             break
 
         except (AttributeError, TypeError, ValueError):
             print("Sa ei sisestanud täisarvu. Proovi uuesti.")
-    viimane_tehe = kysimus
-    oige_vastus = lahutatav - lahutaja
-    oige_voi_vale(oige_vastus, vastus)
+    last_calculation = question
+    right_answer = subtractive - subtracter
+    right_or_wrong_answer(right_answer, answer)
 
 
-def korrutamine():
-    global viimane_tehe
+def multiplication():
+    global last_calculation
 
     while True:
-        korrutaja = random.randint(1, 10)
-        korrutatav = random.randint(1, suurim_number)
-        kysimus = "{0} * {1} = ".format(korrutatav, korrutaja)
-        if kysimus != viimane_tehe:
+        multiplier = random.randint(1, 10)
+        multiplicand = random.randint(1, biggest_number)
+        question = "{0} * {1} = ".format(multiplicand, multiplier)
+        if question != last_calculation:
             break
 
     while True:
         try:
-            vastus = int(input(kysimus))
+            answer = int(input(question))
             break
 
         except (AttributeError, TypeError, ValueError):
             print("Sa ei sisestanud täisarvu. Proovi uuesti.")
 
-    viimane_tehe = kysimus
-    oige_vastus = korrutatav * korrutaja
-    oige_voi_vale(oige_vastus, vastus)
+    last_calculation = question
+    right_answer = multiplicand * multiplier
+    right_or_wrong_answer(right_answer, answer)
 
 
-def tehte_valik(tehe):
+def choose_calculation_type(calculation_type_in):
     try:
-        if tehe == 1:
-            liitmine()
-        elif tehe == 2:
-            lahutamine()
-        elif tehe == 4:
-            korrutamine()
+        if calculation_type_in == 1:
+            addition()
+        elif calculation_type_in == 2:
+            subtraction()
+        elif calculation_type_in == 4:
+            multiplication()
         else:
             exit_on_error()
-    except (AttributeError, TypeError):
+    except (AttributeError, TypeError, ValueError):
         raise AssertionError("Tehte valik peab olema int tüüpi")
 
-#### tehte valik ###
+#### Let user choose calculation type ###
 print()
 print("""Vali tehe:
             1: liitmine
@@ -123,35 +123,35 @@ print("""Vali tehe:
             4: korrutamine""")
 while True:
     try:
-        tehe = int(input())
-        if tehe < 5:
+        calculation_type = int(input())
+        if calculation_type < 5:
             break
         else:
             print("Tehte valimiseks sisesta number, mis on tehte ees. Näiteks: 3")
             print("Proovi uuesti:")
-    except (ValueError):
+    except ValueError:
         print("Tehte valimiseks sisesta number, mis on tehte ees. Näiteks: 3")
         print("Proovi uuesti:")
 
-if tehe == 1:
-    tehe_sonadega = "liitmist"
-elif tehe == 2:
-    tehe_sonadega = "lahutamist"
-elif tehe == 3:
-    tehe_sonadega = "liitmist ja lahutamist"
-elif tehe == 4:
-    tehe_sonadega = "korrutamist"
+if calculation_type == 1:
+    calculation_type_in_string_with_grammatics = "liitmist"
+elif calculation_type == 2:
+    calculation_type_in_string_with_grammatics = "lahutamist"
+elif calculation_type == 3:
+    calculation_type_in_string_with_grammatics = "liitmist ja lahutamist"
+elif calculation_type == 4:
+    calculation_type_in_string_with_grammatics = "korrutamist"
 else:
-    tehe_sonadega = ""
+    calculation_type_in_string_with_grammatics = ""
     exit_on_error()
 
-#### raskusastme valik ###
+#### Let user choose biggest number ###
 print()
-print("Sisesta suurim positiivne täisarv, mille piires {0} harjutada: ".format(tehe_sonadega))
+print("Sisesta suurim positiivne täisarv, mille piires {0} harjutada: ".format(calculation_type_in_string_with_grammatics))
 while True:
     try:
-        suurim_number = int(input())
-        if suurim_number > 0:
+        biggest_number = int(input())
+        if biggest_number > 0:
             break
         else:
             print("Nullist väiksemate arvudega harjutamine ei ole veel toetatud")
@@ -162,10 +162,10 @@ while True:
 
 
 #### mängu käivitus ###
-while punktide_counter < mangu_pikkus:
-    if tehe == 3:
-        tehte_valik(random.randint(1, 2))
+while points_counter < game_length:
+    if calculation_type == 3:
+        choose_calculation_type(random.randint(1, 2))
     else:
-        tehte_valik(tehe)
+        choose_calculation_type(calculation_type)
 
 v = input("Väljumiseks vajuta Enter")
