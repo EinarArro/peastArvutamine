@@ -2,25 +2,28 @@ __author__ = 'einar'
 
 import random
 
-manguPikkus = 30
-punktideCounter = 0
+mangu_pikkus = 30
+punktide_counter = 0
 
 print("{:*^75}".format(" PEAST ARVUTAMISE MÄNG "))
 print("** Iga õige vastus annab ühe punkti. Iga vale vastus võtab kaks punkti maha")
-print("** Mäng lõppeb, kui oled kokku kogunud {0} punkti".format(manguPikkus))
+print("** Mäng lõppeb, kui oled kokku kogunud {0} punkti".format(mangu_pikkus))
 print("{:*^75}".format("*"))
 
 
-def oigeVoiVale(param1, param2):
-    global punktideCounter
+def exit_on_error():
+    v = input("Sinu sisestatud andmed ei ole korrektsed. Väljumiseks vajuta Enter ja taaskäivita mäng")
+
+def oige_voi_vale(param1, param2):
+    global punktide_counter
 
     try:
         if param1 != param2:
-            punktideCounter -= 2
+            punktide_counter -= 2
             print("VALE VASTUS")
             print()
         else:
-            punktideCounter += 1
+            punktide_counter += 1
             print()
     except (AttributeError, TypeError):
         raise AssertionError("Õige ja vale vastus ei ole õiget tüüpi")
@@ -33,9 +36,8 @@ def liitmine():
         vastus = int(input("{0} + {1} = ".format(liidetav, liitja)))
     except (AttributeError, TypeError):
         raise AssertionError("Sa ei sisestanud täisarvu")
-    oigeVastus = liidetav + liitja
-    oigeVoiVale(oigeVastus, vastus)
-
+    oige_vastus = liidetav + liitja
+    oige_voi_vale(oige_vastus, vastus)
 
 def lahutamine():
     lahutatav = random.randint(2, suurim_number)
@@ -44,21 +46,20 @@ def lahutamine():
         vastus = int(input("{0} - {1} = ".format(lahutatav, lahutaja)))
     except (AttributeError, TypeError):
         raise AssertionError("Sa ei sisestanud täisarvu")
-    oigeVastus = lahutatav - lahutaja
-    oigeVoiVale(oigeVastus, vastus)
+    oige_vastus = lahutatav - lahutaja
+    oige_voi_vale(oige_vastus, vastus)
 
 def korrutamine():
-    korrutatav = random.randint(1, 10)
-    korrutaja = random.randint(1, suurim_number)
+    korrutaja = random.randint(1, 10)
+    korrutatav = random.randint(1, suurim_number)
     try:
-        vastus = int(input("{0} * {1} = ".format(korrutaja, korrutatav)))
+        vastus = int(input("{0} * {1} = ".format(korrutatav, korrutaja)))
     except (AttributeError, TypeError):
         raise AssertionError("Sa ei sisestanud täisarvu")
-    oigeVastus = korrutatav * korrutaja
-    oigeVoiVale(oigeVastus, vastus)
+    oige_vastus = korrutatav * korrutaja
+    oige_voi_vale(oige_vastus, vastus)
 
-
-def tehteValik(tehe):
+def tehte_valik(tehe):
     try:
         if tehe == 1:
             liitmine()
@@ -67,7 +68,7 @@ def tehteValik(tehe):
         elif tehe == 4:
             korrutamine()
         else:
-            v = input("Sinu sisestatud tehtevalik ei ole lubatud. Väljumiseks vajuta Enter ja taaskäivita mäng")
+            exit_on_error()
             raise SystemExit
     except (AttributeError, TypeError):
         raise AssertionError("Tehte valik peab olema int tüüpi")
@@ -78,33 +79,34 @@ print("Vali tehe:     1: liitmine     2: lahutamine     3: liitmine ja lahutamin
 try:
     tehe = int(input())
 except (ValueError):
-    v = input("Sinu sisestatud tehtevalik ei ole lubatud. Väljumiseks vajuta Enter ja taaskäivita mäng")
+    exit_on_error()
     raise SystemExit
 
 if tehe == 1:
-    teheSonadega = "liitmist"
+    tehe_sonadega = "liitmist"
 elif tehe == 2:
-    teheSonadega = "lahutamist"
+    tehe_sonadega = "lahutamist"
 elif tehe == 3:
-    teheSonadega = "liitmist ja lahutamist"
+    tehe_sonadega = "liitmist ja lahutamist"
 elif tehe == 4:
-    teheSonadega = "korrutamist"
+    tehe_sonadega = "korrutamist"
+else:
+    exit_on_error()
 
 #### raskusastme valik ###
 print()
-print("Sisesta suurim number, mille piires {0} harjutada: ".format(teheSonadega))
+print("Sisesta suurim number, mille piires {0} harjutada: ".format(tehe_sonadega))
 try:
     suurim_number = int(input())
 except (ValueError):
-    v = input("Sinu sisestatud raskusaste ei ole lubatud. Väljumiseks vajuta Enter ja taaskäivita mäng")
+    exit_on_error()
     raise SystemExit
 
 #### mängu käivitus ###
-while (punktideCounter < manguPikkus):
+while (punktide_counter < mangu_pikkus):
     if tehe == 3:
-        tehteValik(random.randint(1, 2))
+        tehte_valik(random.randint(1, 2))
     else:
-        tehteValik(tehe)
-
+        tehte_valik(tehe)
 
 v = input("Väljumiseks vajuta Enter")
