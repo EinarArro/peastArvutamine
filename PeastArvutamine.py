@@ -30,6 +30,7 @@ def right_or_wrong_answer(param1, param2):
         else:
             points_counter += 1
             print()
+
     except (AttributeError, TypeError):
         raise AssertionError("Õige ja vale vastus ei ole õiget tüüpi")
 
