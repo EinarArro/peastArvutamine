@@ -1,10 +1,11 @@
 __author__ = 'einar'
 
 import random
+from collections import deque
 
 game_length = 30
 points_counter = 0
-last_calculation = ""
+last_calculations = deque(maxlen=5)
 
 
 print("{:*^75}".format(" PEAST ARVUTAMISE MÄNG "))
@@ -34,14 +35,13 @@ def right_or_wrong_answer(param1, param2):
 
 
 def addition():
-    global last_calculation
+    global last_calculations
 
     while True:
         addend = random.randint(1, biggest_number)
         adder = random.randint(1, biggest_number)
         question = "{0} + {1} = ".format(addend, adder)
-        if (question != last_calculation) or (addend == 1 and adder == 1):
-            #kui ühtedega võrdlemist sisse ei too, siis saab süsteemi lolliks ajada
+        if question not in last_calculations:
             break
 
     while True:
@@ -51,19 +51,19 @@ def addition():
 
         except (AttributeError, TypeError, ValueError):
             print("Sa ei sisestanud täisarvu. Proovi uuesti.")
-    last_calculation = question
+    last_calculations.append(question)
     right_answer = addend + adder
     right_or_wrong_answer(right_answer, answer)
 
 
 def subtraction():
-    global last_calculation
+    global last_calculations
 
     while True:
         subtractive = random.randint(2, biggest_number)
         subtracter = random.randint(1, subtractive)
         question = "{0} - {1} = ".format(subtractive, subtracter)
-        if question != last_calculation:
+        if question not in last_calculations:
             break
 
     while True:
@@ -73,19 +73,19 @@ def subtraction():
 
         except (AttributeError, TypeError, ValueError):
             print("Sa ei sisestanud täisarvu. Proovi uuesti.")
-    last_calculation = question
+    last_calculations.append(question)
     right_answer = subtractive - subtracter
     right_or_wrong_answer(right_answer, answer)
 
 
 def multiplication():
-    global last_calculation
+    global last_calculations
 
     while True:
         multiplier = random.randint(1, 10)
         multiplicand = random.randint(1, biggest_number)
         question = "{0} * {1} = ".format(multiplicand, multiplier)
-        if question != last_calculation:
+        if question not in last_calculations:
             break
 
     while True:
@@ -96,7 +96,7 @@ def multiplication():
         except (AttributeError, TypeError, ValueError):
             print("Sa ei sisestanud täisarvu. Proovi uuesti.")
 
-    last_calculation = question
+    last_calculations.append(question)
     right_answer = multiplicand * multiplier
     right_or_wrong_answer(right_answer, answer)
 
@@ -152,7 +152,11 @@ while True:
     try:
         biggest_number = int(input())
         if biggest_number > 0:
-            break
+            if biggest_number < 10 and calculation_type < 4:
+                print("Kümnest väiksemate numbritega liitmist ega lahutamist teha ei saa.")
+                print("Proovi uuesti: ")
+            else:
+                break
         else:
             print("Nullist väiksemate arvudega harjutamine ei ole veel toetatud")
             print("Proovi uuesti:")
