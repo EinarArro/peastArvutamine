@@ -18,11 +18,11 @@ def exit_on_error():
     raise SystemExit
 
 
-def right_or_wrong_answer(param1, param2):
+def right_or_wrong_answer(right_answer, answer):
     global points_counter
 
     try:
-        if param1 != param2:
+        if right_answer != answer:
             points_counter -= 2
             print("VALE VASTUS")
             print()
