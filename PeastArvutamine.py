@@ -1,3 +1,4 @@
+# coding=utf-8
 __author__ = 'einar'
 
 import random
@@ -5,7 +6,7 @@ from collections import deque
 
 game_length = 30
 points_counter = 0
-last_calculations = deque(maxlen=5)
+last_calculations = deque(maxlen = 5)
 
 
 print("{:*^75}".format(" PEAST ARVUTAMISE MÄNG "))
