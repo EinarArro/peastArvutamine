@@ -7,13 +7,6 @@ manguPikkus = 5  # muuda seda numbrit, kui tahad mängu pikkust muuta
 punktideCounter = 0
 queue = deque(maxlen=5)
 
-
-def taida_que_randomiga():
-    for i in range(0, 5):
-        random_string= "XYZ{0}".format(i)
-        queue.append(random_string)
-
-
 def print_mangu_kirjeldus():
     print('{:*^80}'.format(' PEAST ARVUTAMISE MÄNG '))
     print('{:*^80}'.format(' Iga õige vastus annab ühe punkti. Iga vale vastus võtab kaks punkti maha '))
@@ -120,7 +113,6 @@ print_mangu_kirjeldus()
 print()
 raskusaste = kysi_raskusaste()
 tehe = kysi_tehe()
-taida_que_randomiga()
 start = time.time()
 
 while punktideCounter < manguPikkus:

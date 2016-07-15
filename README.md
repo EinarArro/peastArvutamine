@@ -1,4 +1,4 @@
-# peastarvutamine
+# Peast Arvutamine
 Peast arvutamise harjutamine. Suunatud algklassi õpilastele.
 Kasutamiseks:
 * lae alla fail "PeastArvutamine.py"
