@@ -27,14 +27,12 @@ def kysi_raskusaste():
 
 def kysi_tehe():
     print()
-    tehe = int(input(
+    print(
         """Vali tehe:
-             1: liitmine
-             2: lahutamine
-             3: liitmine ja lahutamine
-
-             Valik: """
-    ))
+            1: liitmine
+            2: lahutamine
+            3: liitmine ja lahutamine""")
+    tehe = int(input("Valik: "))
     return tehe
 
 
