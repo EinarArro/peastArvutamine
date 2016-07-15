@@ -1,177 +1,82 @@
-# coding=utf-8
-__author__ = 'einar'
-
 import random
-from collections import deque
+import time
 
-game_length = 30
-points_counter = 0
-last_calculations = deque(maxlen = 5)
+manguPikkus = 30
+punktideCounter = 0
 
-
-print("{:*^75}".format(" PEAST ARVUTAMISE MÄNG "))
-print("** Iga õige vastus annab ühe punkti. Iga vale vastus võtab kaks punkti maha")
-print("** Mäng lõppeb, kui oled kokku kogunud {0} punkti".format(game_length))
-print("{:*^75}".format("*"))
+print("{:*^70}".format(" PEAST ARVUTAMISE MÄNG "))
+print("***** Iga õige vastus annab ühe punkti. Iga vale vastus võtab kaks punkti maha".format('centered'))
+print("***** Mäng lõppeb, kui oled kokku kogunud {0} punkti".format(manguPikkus))
+print("{:*^70}".format("*"))
 
 
-def exit_on_error():
-    error_message = input("Sinu sisestatud andmed ei ole korrektsed. Väljumiseks vajuta Enter ja taaskäivita mäng")
-    raise SystemExit
+def arvutaRaskusaste(param):
+    if param == 1:
+        raskusaste = 10
+    elif param == 2:
+        raskusaste = 20
+    elif param == 3:
+        raskusaste = 30
+    elif param == 4:
+        raskusaste = 40
+    return raskusaste
 
-
-def right_or_wrong_answer(right_answer, answer):
-    global points_counter
-
-    try:
-        if right_answer != answer:
-            points_counter -= 2
-            print("VALE VASTUS")
-            print()
-        else:
-            points_counter += 1
-            print()
-
-    except (AttributeError, TypeError):
-        raise AssertionError("Õige ja vale vastus ei ole õiget tüüpi")
-
-
-def addition():
-    global last_calculations
-
-    while True:
-        addend = random.randint(1, biggest_number)
-        adder = random.randint(1, biggest_number)
-        question = "{0} + {1} = ".format(addend, adder)
-        if question not in last_calculations:
-            break
-
-    while True:
-        try:
-            answer = int(input(question))
-            break
-
-        except (AttributeError, TypeError, ValueError):
-            print("Sa ei sisestanud täisarvu. Proovi uuesti.")
-    last_calculations.append(question)
-    right_answer = addend + adder
-    right_or_wrong_answer(right_answer, answer)
-
-
-def subtraction():
-    global last_calculations
-
-    while True:
-        subtractive = random.randint(2, biggest_number)
-        subtracter = random.randint(1, subtractive)
-        question = "{0} - {1} = ".format(subtractive, subtracter)
-        if question not in last_calculations:
-            break
-
-    while True:
-        try:
-            answer = int(input(question))
-            break
-
-        except (AttributeError, TypeError, ValueError):
-            print("Sa ei sisestanud täisarvu. Proovi uuesti.")
-    last_calculations.append(question)
-    right_answer = subtractive - subtracter
-    right_or_wrong_answer(right_answer, answer)
-
-
-def multiplication():
-    global last_calculations
-
-    while True:
-        multiplier = random.randint(1, 10)
-        multiplicand = random.randint(1, biggest_number)
-        question = "{0} * {1} = ".format(multiplicand, multiplier)
-        if question not in last_calculations:
-            break
-
-    while True:
-        try:
-            answer = int(input(question))
-            break
-
-        except (AttributeError, TypeError, ValueError):
-            print("Sa ei sisestanud täisarvu. Proovi uuesti.")
-
-    last_calculations.append(question)
-    right_answer = multiplicand * multiplier
-    right_or_wrong_answer(right_answer, answer)
-
-
-def choose_calculation_type(calculation_type_in):
-    try:
-        if calculation_type_in == 1:
-            addition()
-        elif calculation_type_in == 2:
-            subtraction()
-        elif calculation_type_in == 4:
-            multiplication()
-        else:
-            exit_on_error()
-    except (AttributeError, TypeError, ValueError):
-        raise AssertionError("Tehte valik peab olema int tüüpi")
-
-#### Let user choose calculation type ###
-print()
-print("""Vali tehe:
-            1: liitmine
-            2: lahutamine
-            3: liitmine ja lahutamine
-            4: korrutamine""")
-while True:
-    try:
-        calculation_type = int(input())
-        if calculation_type < 5:
-            break
-        else:
-            print("Tehte valimiseks sisesta number, mis on tehte ees. Näiteks: 3")
-            print("Proovi uuesti:")
-    except ValueError:
-        print("Tehte valimiseks sisesta number, mis on tehte ees. Näiteks: 3")
-        print("Proovi uuesti:")
-
-if calculation_type == 1:
-    calculation_type_in_string_with_grammatics = "liitmist"
-elif calculation_type == 2:
-    calculation_type_in_string_with_grammatics = "lahutamist"
-elif calculation_type == 3:
-    calculation_type_in_string_with_grammatics = "liitmist ja lahutamist"
-elif calculation_type == 4:
-    calculation_type_in_string_with_grammatics = "korrutamist"
-else:
-    calculation_type_in_string_with_grammatics = ""
-    exit_on_error()
-
-#### Let user choose biggest number ###
-print()
-print("Sisesta suurim positiivne täisarv, mille piires {0} harjutada: ".format(calculation_type_in_string_with_grammatics))
-while True:
-    try:
-        biggest_number = int(input())
-        if biggest_number > 0:
-            if biggest_number < 10 and calculation_type < 4:
-                print("Kümnest väiksemate numbritega liitmist ega lahutamist teha ei saa.")
-                print("Proovi uuesti: ")
-            else:
-                break
-        else:
-            print("Nullist väiksemate arvudega harjutamine ei ole veel toetatud")
-            print("Proovi uuesti:")
-    except ValueError:
-        print("Sisesta korrektne täisarv. Näiteks: 10")
-        print("Proovi uuesti:")
-
-
-#### mängu käivitus ###
-while points_counter < game_length:
-    if calculation_type == 3:
-        choose_calculation_type(random.randint(1, 2))
+def oigeVoiVale(param1, param2):
+    global punktideCounter
+    
+    if param1 != param2:
+        punktideCounter -= 2
+        print("VALE VASTUS")
+        print()
     else:
-        choose_calculation_type(calculation_type)
+        punktideCounter += 1
+        print()
+        #print(punktideCounter)
 
-v = input("Väljumiseks vajuta Enter")
+def vastus(oigeVastus):
+    vastus = int(input())
+    oigeVoiVale(oigeVastus, vastus) 
+
+def liitmine():
+    liidetav = random.randint(1, raskusaste)
+    liitja = random.randint(1, raskusaste)
+    print("{0} + {1} = ".format(liidetav, liitja))
+    oigeVastus = liidetav + liitja
+    vastus(oigeVastus)
+
+def lahutamine():
+    lahutatav = random.randint(2, raskusaste)
+    lahutaja = random.randint(1, lahutatav)
+    print("{0} - {1} = ".format(lahutatav, lahutaja))
+    oigeVastus = lahutatav - lahutaja
+    vastus(oigeVastus)
+
+def tehteValik(tehe):
+    if tehe == 1:
+        liitmine()
+    else:
+        lahutamine()
+
+def prindiAeg(start, end):
+    print("Aeg: {0:.0f} sekundit".format(end-start))
+        
+print()
+print("Vali raskusaste:     1: kuni 10     2: kuni 20     3: kuni 30     4: kuni 40")
+raskusaste_in = int(input())
+raskusaste = arvutaRaskusaste(raskusaste_in)
+    
+print("Vali tehe:     1: liitmine     2: lahutamine     3: liitmine ja lahutamine")
+tehe = int(input())
+
+start = time.time()
+
+while (punktideCounter < manguPikkus):
+    if tehe == 3:
+        tehteValik(random.randint(1,2))
+    else:
+        tehteValik(tehe)
+
+end = time.time()
+time = end-start
+print("Mängu läbimiseks kulus {0:.0f} minutit ja {1:.0f} sekundit".format((time // 60), (time % 60)))
+a = input("Väljumiseks vajuta Enter")
